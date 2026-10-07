@@ -8,19 +8,25 @@ Pilotage : /live.html?session=CODE
 Node.js >= 22 :
 npm ci
 npx netlify login
-npm run deploy
+npx netlify link --id f126b91d-9f86-4542-84ce-03e8138597f3
+read -r -s -p "PIN enseignant : " QUIZ_CLAP_PIN
+npm run deploy -- --secret-env "TEACHER_PIN=$QUIZ_CLAP_PIN"
+unset QUIZ_CLAP_PIN
 
 TEACHER_PIN doit être disponible pour les Functions sur Netlify.
 Modèle Excel : public/modele-quiz.xlsx
 
 Ne pas publier uniquement public par glisser-déposer : il faut aussi déployer la fonction.
 
-État : publication Netlify confirmée le 7 octobre 2026.
-Déploiement de production : 6ac696b9831c85a7f54e15a2 (ready), fonction live déployée.
+État : QUIZ CLAP publié et accès professeur actif le 7 octobre 2026.
+Déploiement de production : 6ac69c6f0b7c8e8a5a30df06 (ready), fonction live déployée.
 Professeur : https://quiz-marketing-m2-tonybill.netlify.app/teacher.html
 Étudiant : https://quiz-marketing-m2-tonybill.netlify.app/
 
-À terminer : activation de TEACHER_PIN (Functions, production), puis nouveau déploiement.
-L’espace professeur reste fermé tant que cette variable est absente.
-Le parcours complet en production sera vérifié après cette activation.
+Accès professeur vérifié : HTTP 200 avec PIN, HTTP 401 sans PIN.
+Dix tests de logique et une séance HTTP isolée de sept questions avec deux participants ont réussi.
+
+TEACHER_PIN est un secret de déploiement réservé aux Functions de production.
+Il doit être transmis à chaque nouvelle publication, avec --secret-env, comme dans les commandes Bash ci-dessus.
+Aucune valeur du PIN n’est enregistrée dans les sources.
 Publication directe ; le dépôt GitHub n’est pas relié à un déploiement automatique.
