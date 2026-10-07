@@ -1,10 +1,10 @@
 # QUIZ CLAP — Classes et import Excel
 
-QUIZ CLAP est une plateforme de quiz pédagogiques en direct. Cette édition est préparée pour le site Netlify existant `quiz-marketing-m2-tonybill` et pour le dépôt GitHub autonome `tonybillndjiki-netizen/Quiz_clap`.
+QUIZ CLAP est une plateforme de quiz pédagogiques en direct. Cette édition est publiée sur le site Netlify existant `quiz-marketing-m2-tonybill` et pour le dépôt GitHub autonome `tonybillndjiki-netizen/Quiz_clap`.
 
 ## Utilisation
 
-1. Ouvrir `/teacher.html` et saisir le PIN enseignant déjà configuré.
+1. Ouvrir `/teacher.html` et saisir le PIN enseignant après activation de sa configuration serveur.
 2. Dans **Mes classes**, créer ou modifier une classe et ses cours. B3 Tronc commun, B3 CDUI et M2 Marketing & Communication sont disponibles dès l’ouverture.
 3. Dans **Mes quiz**, choisir **Nouveau quiz** ou **Importer Excel**. Télécharger le modèle dans l’éditeur si nécessaire.
 4. Choisir la feuille du classeur et la ligne des en-têtes. Associer les colonnes de son propre fichier si elles diffèrent du modèle.
@@ -64,6 +64,8 @@ La fonction a été compilée avec Netlify CLI. Le parcours complet a été test
 
 Les sauvegardes utilisent les écritures conditionnelles de Netlify Blobs afin d’éviter l’écrasement des réponses ou des modifications provenant d’un autre onglet. Une compatibilité avec le stockage local Netlify est incluse lorsque les lectures ne renvoient pas directement leur ETag. Les commandes de pilotage attendent la fin de l’action en cours ; une ancienne actualisation ne remplace pas un état de session plus récent.
 
-Ces contrôles valident la version préparée localement. Ils ne constituent pas une confirmation de publication sur l’URL Netlify. L’édition reste à publier sur le site existant après connexion au compte autorisé.
+La publication a été confirmée le 7 octobre 2026 sur le site existant, avec le déploiement de production `6ac696b9831c85a7f54e15a2` à l’état `ready` et la fonction `live` accessible sur `/api/live`. Les pages professeur et étudiant sont disponibles ; le modèle Excel répond en HTTP 200 et un code de session inconnu renvoie HTTP 404.
+
+Configuration à terminer : la variable serveur `TEACHER_PIN` est absente. L’espace professeur reste fermé (HTTP 503) jusqu’à son activation dans la portée **Functions**, contexte **production**, puis un nouveau déploiement. Le contrôle d’une session complète en production reste à réaliser après cette activation. Le dépôt conserve le code ; cette publication a été effectuée directement et aucun déploiement automatique depuis GitHub n’est configuré.
 
 L’import Excel utilise le décompresseur Pako fourni localement avec sa licence. Le QR code du pilotage utilise le service externe QRServer ; le lien étudiant reste accessible et copiable indépendamment de ce service.
