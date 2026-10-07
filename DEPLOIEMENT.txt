@@ -15,4 +15,12 @@ Modèle Excel : public/modele-quiz.xlsx
 
 Ne pas publier uniquement public par glisser-déposer : il faut aussi déployer la fonction.
 
-État : code finalisé, fonction compilée et parcours navigateur validé ; publication Netlify non réalisée.
+État : publication Netlify confirmée le 7 octobre 2026.
+Déploiement de production : 6ac696b9831c85a7f54e15a2 (ready), fonction live déployée.
+Professeur : https://quiz-marketing-m2-tonybill.netlify.app/teacher.html
+Étudiant : https://quiz-marketing-m2-tonybill.netlify.app/
+
+À terminer : activation de TEACHER_PIN (Functions, production), puis nouveau déploiement.
+L’espace professeur reste fermé tant que cette variable est absente.
+Le parcours complet en production sera vérifié après cette activation.
+Publication directe ; le dépôt GitHub n’est pas relié à un déploiement automatique.
