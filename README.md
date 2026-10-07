@@ -1,10 +1,10 @@
 # QUIZ CLAP — Classes et import Excel
 
-QUIZ CLAP est une plateforme de quiz pédagogiques en direct. Cette édition est publiée sur le site Netlify existant `quiz-marketing-m2-tonybill` et pour le dépôt GitHub autonome `tonybillndjiki-netizen/Quiz_clap`.
+QUIZ CLAP est une plateforme de quiz pédagogiques en direct. Cette édition est publiée sur le site Netlify existant `quiz-marketing-m2-tonybill`. Les sources sont conservées dans le dépôt GitHub autonome `tonybillndjiki-netizen/Quiz_clap`.
 
 ## Utilisation
 
-1. Ouvrir `/teacher.html` et saisir le PIN enseignant après activation de sa configuration serveur.
+1. Ouvrir `/teacher.html` et saisir le PIN enseignant.
 2. Dans **Mes classes**, créer ou modifier une classe et ses cours. B3 Tronc commun, B3 CDUI et M2 Marketing & Communication sont disponibles dès l’ouverture.
 3. Dans **Mes quiz**, choisir **Nouveau quiz** ou **Importer Excel**. Télécharger le modèle dans l’éditeur si nécessaire.
 4. Choisir la feuille du classeur et la ligne des en-têtes. Associer les colonnes de son propre fichier si elles diffèrent du modèle.
@@ -40,15 +40,20 @@ Les résultats et corrigés complets ne sont accessibles qu’avec le PIN enseig
 
 ## Déploiement sur le site existant
 
-Node.js 22 ou plus récent et accès réseau à npm / Netlify sont nécessaires. Le glisser-déposer du seul dossier `public` ne suffit pas à publier la fonction et la sauvegarde live.
+Node.js 22 ou plus récent et accès réseau à npm / Netlify sont nécessaires. Les commandes suivantes utilisent un terminal Bash. Le glisser-déposer du seul dossier `public` ne suffit pas à publier la fonction et la sauvegarde live.
 
 ```bash
 npm ci
 npx netlify login
-npm run deploy
+npx netlify link --id f126b91d-9f86-4542-84ce-03e8138597f3
+read -r -s -p "PIN enseignant : " QUIZ_CLAP_PIN
+npm run deploy -- --secret-env "TEACHER_PIN=$QUIZ_CLAP_PIN"
+unset QUIZ_CLAP_PIN
 ```
 
-Le site cible est déjà renseigné : `f126b91d-9f86-4542-84ce-03e8138597f3`. Le PIN doit être fourni dans la variable Netlify `TEACHER_PIN`, avec portée **Functions**. Aucune valeur secrète n’est incluse dans les fichiers.
+Le site cible est déjà renseigné : `f126b91d-9f86-4542-84ce-03e8138597f3`. Le PIN est fourni comme secret `TEACHER_PIN` attaché au déploiement de production, uniquement pour les Functions. Son contenu est masqué dans Netlify. Cette méthode utilise l’option officielle `--secret-env` : https://cli.netlify.com/commands/deploy/.
+
+Le secret doit être transmis à chaque nouvelle publication. Les commandes ci-dessus le demandent sans l’afficher et le retirent de la variable locale après la publication. Le forfait actuel ne permet pas de choisir la portée Functions pour une variable permanente de projet. Aucune valeur secrète n’est incluse dans les fichiers.
 
 Après déploiement, vérifier :
 
@@ -64,8 +69,12 @@ La fonction a été compilée avec Netlify CLI. Le parcours complet a été test
 
 Les sauvegardes utilisent les écritures conditionnelles de Netlify Blobs afin d’éviter l’écrasement des réponses ou des modifications provenant d’un autre onglet. Une compatibilité avec le stockage local Netlify est incluse lorsque les lectures ne renvoient pas directement leur ETag. Les commandes de pilotage attendent la fin de l’action en cours ; une ancienne actualisation ne remplace pas un état de session plus récent.
 
-La publication a été confirmée le 7 octobre 2026 sur le site existant, avec le déploiement de production `6ac696b9831c85a7f54e15a2` à l’état `ready` et la fonction `live` accessible sur `/api/live`. Les pages professeur et étudiant sont disponibles ; le modèle Excel répond en HTTP 200 et un code de session inconnu renvoie HTTP 404.
+La publication a été confirmée le 7 octobre 2026 sur le site existant, avec le déploiement de production `6ac69c6f0b7c8e8a5a30df06` à l’état `ready` et la fonction `live` accessible sur `/api/live`. Les pages professeur et étudiant sont disponibles ; le modèle Excel répond en HTTP 200 et un code de session inconnu renvoie HTTP 404.
 
-Configuration à terminer : la variable serveur `TEACHER_PIN` est absente. L’espace professeur reste fermé (HTTP 503) jusqu’à son activation dans la portée **Functions**, contexte **production**, puis un nouveau déploiement. Le contrôle d’une session complète en production reste à réaliser après cette activation. Le dépôt conserve le code ; cette publication a été effectuée directement et aucun déploiement automatique depuis GitHub n’est configuré.
+L’accès professeur a été vérifié sur l’URL de production : HTTP 200 avec le PIN et HTTP 401 sans PIN. Les trois classes et les deux quiz d’origine sont accessibles. Le stockage de production est lisible ; aucun test de création de séance n’a été exécuté dans la production.
+
+La version finale a réussi les dix tests de logique et un parcours HTTP isolé du diagnostic complet : deux participants, sept questions, salle d’attente, pause et reprise, protection et révélation des corrigés, enregistrement des réponses, historique et résultats de 100 % et 0 %. La fonction finale a été compilée avec Netlify CLI en contexte production.
+
+Le dépôt conserve le code. La publication a été effectuée directement ; aucun déploiement automatique depuis GitHub n’est configuré.
 
 L’import Excel utilise le décompresseur Pako fourni localement avec sa licence. Le QR code du pilotage utilise le service externe QRServer ; le lien étudiant reste accessible et copiable indépendamment de ce service.
